@@ -3,14 +3,25 @@ import {
   Controller,
   HttpException,
   Post,
+  Req,
   Request,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { BasicAuthGuard } from '@utils/basicauth.guard';
 import { CreateUser } from './auth.interface';
-import { ApiBasicAuth, ApiBody, ApiOkResponse } from '@nestjs/swagger';
+import {
+  ApiBasicAuth,
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiHeader,
+  ApiOkResponse,
+} from '@nestjs/swagger';
 import { AuthSwagger } from './auth.swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('auth')
 export class AuthController {
@@ -70,12 +81,31 @@ export class AuthController {
       required: ['success', 'message', 'data'],
     },
   })
+  @UseInterceptors(FileInterceptor('profile_image'))
+  @ApiConsumes('multipart/form-data')
   @ApiBody({ type: AuthSwagger })
-  createUser(@Body() body: CreateUser) {
+  createUser(@UploadedFile() file: File, @Body() body: CreateUser) {
     try {
-      return this.authService.createUser(body);
+      return this.authService.createUser(body, file);
+    } catch (error) {
+      throw new HttpException(error, 500);
+    }
+  }
+
+  @Post('/refresh')
+  @ApiBearerAuth('authorization')
+  restoreAccessToken(@Req() req: Request) {
+    try {
+      return this.authService.getAccessToken(req);
     } catch (error) {
       throw new HttpException(error, 500);
     }
   }
 }
+
+// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+//   .eyJpZCI6Imthbmc5a2FuZzlAZ21haWwuY29tIiwiaWF0IjoxNzM1ODg5MzY5LCJleHAiOjE3Njc0MjUzNjl9
+//   .C5JfhFMxna -
+//   QVCztFgZC3QmZ -
+//   L8SkJAz9cE5RJXxz -
+//   4;

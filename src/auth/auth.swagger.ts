@@ -21,4 +21,10 @@ export class AuthSwagger {
 
   @ApiProperty({ required: false, description: 'account OAuth Token' })
   account_number?: string;
+
+  @ApiProperty({
+    required: true,
+    format: 'binary',
+  })
+  profile_image: string;
 }

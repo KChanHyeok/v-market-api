@@ -25,9 +25,9 @@ async function bootstrap() {
         bearerFormat: 'Bearer', // I`ve tested not to use this field, but the result was the same
         scheme: 'Bearer',
         type: 'http', // I`ve attempted type: 'apiKey' too
-        in: 'Header',
+        in: 'Headers',
       },
-      'accessToken',
+      'authorization',
     )
     .build();
   const document = SwaggerModule.createDocument(app, config);
