@@ -39,3 +39,45 @@ export async function imageUpload(file: any) {
     };
   }
 }
+
+export async function multipleImageUpload(files: any[]) {
+  if (files.length === 0) {
+    throw new HttpException('파일이 존재하지 않습니다', 400);
+  }
+
+  // 병렬 요청을 최적화하기 위해 배치 처리
+  const chunkSize = 10; // 한 번에 업로드할 파일의 개수
+  const chunkedFiles = [];
+
+  for (let i = 0; i < files.length; i += chunkSize) {
+    chunkedFiles.push(files.slice(i, i + chunkSize));
+  }
+
+  const uploadResults = [];
+
+  for (const fileChunk of chunkedFiles) {
+    const chunkResults = await Promise.all(
+      fileChunk.map(async (file: File) => {
+        try {
+          return await imageUpload(file);
+        } catch (error) {
+          return { success: false, error: error.message };
+        }
+      }),
+    );
+
+    uploadResults.push(...chunkResults);
+  }
+
+  // 실패한 파일들을 처리
+  const failedUploads = uploadResults.filter((result) => !result.success);
+
+  if (failedUploads.length > 0) {
+    throw new HttpException('일부 파일 업로드에 실패했습니다', 500);
+  }
+
+  return {
+    success: true,
+    images_url: uploadResults.map((result) => result.profile_image),
+  };
+}

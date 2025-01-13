@@ -24,7 +24,6 @@ export class AuthSwagger {
 
   @ApiProperty({
     required: true,
-    format: 'binary',
   })
-  profile_image: string;
+  profile_image: string[];
 }
