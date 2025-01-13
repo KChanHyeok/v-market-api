@@ -18,7 +18,7 @@ export class Product {
   product_title: string;
 
   @Column({ type: 'text' })
-  product_img: string;
+  product_img_key: string;
 
   @Column({ type: 'text' })
   product_memo: string;
