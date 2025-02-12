@@ -27,13 +27,13 @@ export class User {
   @Column('varchar', { length: 13 })
   phone: string;
 
-  @Column({ unique: true, nullable: false, type: 'text' })
+  @Column({ nullable: true, type: 'text' })
   goo_token: string;
 
-  @Column({ unique: true, nullable: false, type: 'text' })
+  @Column({ nullable: true, type: 'text' })
   kakao_token: string;
 
-  @Column({ unique: true, type: 'varchar', length: 50 })
+  @Column({ nullable: true, type: 'varchar', length: 50 })
   account_number: string;
 
   @Column('text')

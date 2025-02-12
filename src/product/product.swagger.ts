@@ -21,6 +21,23 @@ export class ProductInserSwagger {
   product_price: number;
 }
 
+export class ProductUpdateSwagger {
+  @ApiProperty({ required: true, description: '상품 ID' })
+  product_id: string;
+
+  @ApiProperty({ required: true, description: '유저 ID' })
+  user_id: string;
+
+  @ApiProperty({ required: false, description: '상품명' })
+  product_title: string;
+
+  @ApiProperty({ required: false, description: '상품설명' })
+  product_memo: string;
+
+  @ApiProperty({ required: false, description: '상품가격' })
+  product_price: string;
+}
+
 export class ProductSelectSwagger {
   @ApiProperty({ required: true, description: '페이지당 보여질 갯수' })
   page_count: number;
@@ -30,4 +47,12 @@ export class ProductSelectSwagger {
 
   @ApiProperty({ required: false, description: '검색' })
   search: string;
+}
+
+export class ProductDeleteSwagger {
+  @ApiProperty({ required: true, description: '상품 ID' })
+  product_id: string;
+
+  @ApiProperty({ required: true, description: '유저 ID' })
+  user_id: string;
 }

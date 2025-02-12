@@ -22,6 +22,10 @@ export class AuthGuard implements CanActivate {
       });
 
       this.expCheckToken(payload);
+      request.user = {
+        id: payload.id,
+      };
+
       return true;
     } catch (error) {
       throw new HttpException('이미 만료된 토큰입니다.', 401);

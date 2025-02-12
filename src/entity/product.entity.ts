@@ -14,7 +14,7 @@ export class Product {
   @Column('varchar', { length: 36 })
   user_id: string;
 
-  @Column('varchar', { length: 25, unique: true })
+  @Column('varchar', { length: 25 })
   product_title: string;
 
   @Column({ type: 'text' })

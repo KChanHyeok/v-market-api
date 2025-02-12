@@ -26,7 +26,7 @@ export class AuthService {
   async getUser(email: string) {
     try {
       const user = await this.repository.query(
-        `SELECT email, user_pwd, refresh_token FROM user WHERE email='${email}';`,
+        `SELECT id, email, user_pwd, refresh_token FROM user WHERE email='${email}';`,
       );
       return user[0] ? user[0] : false;
     } catch (err) {
